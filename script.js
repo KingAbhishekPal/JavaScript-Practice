@@ -1,15 +1,10 @@
-let redBtn = document.getElementById("redBtn");
-let greenBtn = document.getElementById("greenBtn");
-let yellowBtn = document.getElementById("yellowBtn");
+const text = document.getElementById("text");
+const count = document.getElementById("count");
 
-redBtn.addEventListener("click", function () {
-    document.body.style.backgroundColor = "red";
-});
+text.addEventListener("input", () => {
 
-greenBtn.addEventListener("click", function () {
-    document.body.style.backgroundColor = "green";
-});
+    let length = text.value.length;
 
-yellowBtn.addEventListener("click", function () {
-    document.body.style.backgroundColor = "yellow";
+    count.textContent = length;
+
 });
