@@ -1,10 +1,13 @@
-const text = document.getElementById("text");
-const count = document.getElementById("count");
+const likeBtn = document.getElementById("likeBtn");
 
-text.addEventListener("input", () => {
+likeBtn.addEventListener("click", () => {
 
-    let length = text.value.length;
+    likeBtn.classList.toggle("liked");
 
-    count.textContent = length;
+    if (likeBtn.classList.contains("liked")) {
+        likeBtn.textContent = "❤️ Liked";
+    } else {
+        likeBtn.textContent = "🤍 Like";
+    }
 
 });
