@@ -1,0 +1,21 @@
+  html,body{
+    margin: 0px;
+    padding:0px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    height:100%;
+} 
+/* h1
+{
+    background-color: green;
+    color:white;
+    text-align: center;
+}  */
+ button{
+    width:100px;
+    height:40px;
+    border-radius:5px;
+      position:fixed;
+   text-align: center;
+ }
