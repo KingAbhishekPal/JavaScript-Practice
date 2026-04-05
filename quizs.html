@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #d7f7ff, #eefcff);
+        }
+
+        .container {
+            width: min(420px, 90%);
+            padding: 24px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .quiz h2 {
+            margin-bottom: 18px;
+            font-size: 22px;
+            color: #12343b;
+        }
+
+        .questions {
+            margin-bottom: 18px;
+            font-size: 18px;
+            color: #1d1d1d;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 18px;
+        }
+
+        ul li {
+            padding: 12px 14px;
+            background: #d8f1ff;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        ul li:hover {
+            background: #bfe7ff;
+        }
+
+        ul li.correct {
+            background: #b7f7c4;
+        }
+
+        ul li.wrong {
+            background: #ffc7c7;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #nextBtn {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            background: #0f7b8f;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #nextBtn:disabled {
+            background: #93b7bf;
+            cursor: not-allowed;
+        }
+
+        .result {
+            font-weight: bold;
+            color: #0f5562;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz">
+            <h2>JavaScript Quiz</h2>
+            <div class="questions"></div>
+            <ul class="options-list"></ul>
+            <div class="footer">
+                <p class="result"></p>
+                <button id="nextBtn" disabled>Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "JavaScript me variable declare karne ke liye kaunsa keyword use hota hai?",
+                options: ["int", "var", "define", "switch"],
+                answer: "var"
+            },
+            {
+                question: "Array me last element add karne ke liye kaunsa method use hota hai?",
+                options: ["push()", "pop()", "shift()", "slice()"],
+                answer: "push()"
+            },
+            {
+                question: "Console me output print karne ke liye kya use hota hai?",
+                options: ["print()", "console.log()", "write()", "show()"],
+                answer: "console.log()"
+            }
+        ];
+
+        const questionElement = document.querySelector(".questions");
+        const optionsList = document.querySelector(".options-list");
+        const nextBtn = document.querySelector("#nextBtn");
+        const resultText = document.querySelector(".result");
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const currentQuestion = quizData[currentQuestionIndex];
+
+            questionElement.textContent = currentQuestion.question;
+            optionsList.innerHTML = "";
+            resultText.textContent = "";
+            nextBtn.disabled = true;
+
+            currentQuestion.options.forEach((option) => {
+                const li = document.createElement("li");
+                li.textContent = option;
+                li.classList.add("option");
+
+                li.addEventListener("click", () => checkAnswer(li, option));
+                optionsList.appendChild(li);
+            });
+        }
+
+        function checkAnswer(selectedOption, selectedAnswer) {
+            const currentQuestion = quizData[currentQuestionIndex];
+            const allOptions = document.querySelectorAll(".option");
+
+            allOptions.forEach((option) => {
+                option.style.pointerEvents = "none";
+
+                if (option.textContent === currentQuestion.answer) {
+                    option.classList.add("correct");
+                }
+            });
+
+            if (selectedAnswer === currentQuestion.answer) {
+                score++;
+                resultText.textContent = "Sahi jawab!";
+            } else {
+                selectedOption.classList.add("wrong");
+                resultText.textContent = "Galat jawab!";
+            }
+
+            nextBtn.disabled = false;
+        }
+
+        nextBtn.addEventListener("click", () => {
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showFinalScore();
+            }
+        });
+
+        function showFinalScore() {
+            document.querySelector(".quiz").innerHTML = `
+                <h2>Quiz Complete</h2>
+                <p class="questions">Aapka score ${score} / ${quizData.length} hai.</p>
+                <button id="restartBtn">Dubara Khelo</button>
+            `;
+
+            document.querySelector("#restartBtn").addEventListener("click", () => {
+                currentQuestionIndex = 0;
+                score = 0;
+                location.reload();
+            });
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
